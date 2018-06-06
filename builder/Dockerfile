@@ -3,14 +3,16 @@ FROM chrislaum/nodejs:latest
 LABEL maintainer="Eric Bidelman <ebidel@>"
 
 # Install utilities
-RUN apt-get update --fix-missing && apt-get -y upgrade
+# what is the alpine alternative ?
+# RUN apt-get update --fix-missing && apt-get -y upgrade
 
 # chromium 64.0.3282.168
 # https://pkgs.alpinelinux.org/packages?name=chromium&branch=edge#
 RUN apk add --no-cache chromium
 
-ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64 /usr/local/bin/dumb-init
-RUN chmod +x /usr/local/bin/dumb-init
+# dumb-init 1.2.1
+# https://pkgs.alpinelinux.org/packages?name=dumb-init&branch=edge
+RUN apk add --no-cache dumb-init
 
 # Download latest Lighthouse from npm.
 # cache bust so we always get the latest version of LH when building the image.
