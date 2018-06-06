@@ -31,9 +31,10 @@ COPY entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 
 # Add a chrome user and setup home dir.
-RUN groupadd --system chrome && \
-    useradd --system --create-home --gid chrome --groups audio,video chrome && \
-    mkdir --parents /home/chrome/reports && \
+# Alternative for --groups audio,video ??
+RUN addgroup -S chrome && \
+    adduser -S -G chrome -s /bin/sh -D chrome && \
+    mkdir -p /home/chrome/reports && \
     chown --recursive chrome:chrome /home/chrome
 
 USER chrome
@@ -46,5 +47,6 @@ ENV CI=true
 
 EXPOSE 8080
 
+# CMD ["/bin/sh"]
 ENTRYPOINT ["dumb-init", "--", "/entrypoint.sh"]
 #CMD ["lighthouse", "--help"]
